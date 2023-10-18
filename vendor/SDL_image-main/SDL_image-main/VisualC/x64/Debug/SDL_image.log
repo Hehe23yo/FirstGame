@@ -1,0 +1,42 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets(2116,5): warning : The referenced project '..\external\SDL\VisualC\SDL\SDL.vcxproj' does not exist.
+cl : command line  warning D9002: ignoring unknown option '/arch:SSE'
+  IMG.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_avif.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_bmp.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_gif.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_jpg.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_jxl.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_lbm.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\src\IMG_lbm.c(33,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL_endian.h': No such file or directory
+  IMG_pcx.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\src\IMG_pcx.c(36,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL_endian.h': No such file or directory
+  IMG_png.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_pnm.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_qoi.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_stb.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_svg.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_tga.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\src\IMG_tga.c(26,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL_endian.h': No such file or directory
+  IMG_tif.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_webp.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_WIC.c
+  IMG_xcf.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\src\IMG_xcf.c(24,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL_endian.h': No such file or directory
+  IMG_xpm.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  IMG_xv.c
+D:\VS_Codes\FirstGame\vendor\SDL_image-main\SDL_image-main\include\SDL3_image\SDL_image.h(32,10): fatal  error C1083: Cannot open include file: 'SDL3/SDL.h': No such file or directory
+  Generating Code...
