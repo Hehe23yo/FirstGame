@@ -11,12 +11,15 @@ public:
 	~renderer();
 
 	void renderSprite();
+	void handleEvents(SDL_Event const &event);
+	void update(double deltaTime);
 private:
 	sprite spaceship;
 
 	SDL_Renderer* m_windowRenderer;
 	SDL_Surface* m_image;
 	SDL_Texture* m_texture;
-	SDL_Rect m_imageRect;
+
+	SDL_FRect m_imageTransform;
 };
 

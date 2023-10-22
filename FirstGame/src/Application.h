@@ -11,13 +11,13 @@ public:
 	~Application();
 
 	void loop();
-	void update();
+	void update(double deltaTime);
 	void draw();
 
 private:
-	SDL_Window* m_window;
+	SDL_Window* m_window = SDL_CreateWindow("Chicken Invaders", 1100, 800, 0);
 	SDL_Event m_event;
 
-	renderer render = {m_window};
+	renderer render = { m_window };
 };
 
