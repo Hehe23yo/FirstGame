@@ -34,6 +34,7 @@ void Application::loop()
 		}
 		update(1 / 60.0);
 		draw();
+		SDL_Delay(130);
 	}
 }
 

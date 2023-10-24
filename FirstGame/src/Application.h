@@ -15,7 +15,7 @@ public:
 	void draw();
 
 private:
-	SDL_Window* m_window = SDL_CreateWindow("Chicken Invaders", 1100, 800, 0);
+	SDL_Window* m_window = SDL_CreateWindow("Chicken Invaders", 1000, 800, 0);
 	SDL_Event m_event;
 
 	renderer render = { m_window };

@@ -3,7 +3,8 @@
 
 sprite::sprite()
 {
-
+	imageX = 500;
+	imageY = 640;
 }
 
 sprite::~sprite()
@@ -11,27 +12,45 @@ sprite::~sprite()
 
 }
 
-SDL_Surface* sprite::loadSprite(char const* path)
+SDL_Surface* sprite::loadSprite(int bmpCheck, char const* path)
 {
-	SDL_Surface* optImage = nullptr;
-
-	SDL_Surface* image = SDL_LoadBMP(path);
-	if(!image)
+	if(bmpCheck == 1)
 	{
-		std::cout << "Failed to load image!" << std::endl;
-		std::cout << "SDL Error : " << SDL_GetError() << std::endl;
-	}
+		SDL_Surface* optImage = nullptr;
 
-	optImage = SDL_ConvertSurface(image, image->format);
-	if (!optImage)
+		SDL_Surface* image = SDL_LoadBMP(path);
+		if (!image)
+		{
+			std::cout << "Failed to load image!" << std::endl;
+			std::cout << "SDL Error : " << SDL_GetError() << std::endl;
+		}
+
+		optImage = SDL_ConvertSurface(image, image->format);
+		if (!optImage)
+		{
+			std::cout << "Failed to load optimized image!" << std::endl;
+			std::cout << "SDL Error : " << SDL_GetError() << std::endl;
+		}
+
+		SDL_DestroySurface(image);
+
+		return optImage;
+	}
+	else
 	{
-		std::cout << "Failed to load optimized image!" << std::endl;
-		std::cout << "SDL Error : " << SDL_GetError() << std::endl;
+		flags = IMG_INIT_JPG | IMG_INIT_PNG;
+		initializedFlags = IMG_Init(flags);
+
+		if ((flags & initializedFlags) != flags)
+		{
+			std::cout << "Failed to initialize image flags!" << std::endl;
+			std::cout << "SDL Error :" << SDL_GetError() << std::endl;
+		}
+
+		SDL_Surface* image = IMG_Load(path);
+		
+		return image;
 	}
-
-	SDL_DestroySurface(image);
-
-	return optImage;
 
 }
 
@@ -66,12 +85,12 @@ double sprite::updateSpritelocation(double deltaTime)
 		imageY += 0.0;
 		break;
 	case direction::RIGHT:
-		if(imageX < 950)
-			imageX += 3.4 * deltaTime;
+		if(imageX < 850)
+			imageX += 4000 * deltaTime;
 		break;
 	case direction::LEFT:
 		if(imageX > 50)
-			imageX -= 3.4 * deltaTime;
+			imageX -= 4000 * deltaTime;
 		break;
 	}
 

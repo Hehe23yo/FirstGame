@@ -11,15 +11,25 @@ public:
 	~renderer();
 
 	void renderSprite();
+	void selectSprite();
 	void handleEvents(SDL_Event const &event);
 	void update(double deltaTime);
 private:
 	sprite spaceship;
+	sprite minotaur;
 
 	SDL_Renderer* m_windowRenderer;
-	SDL_Surface* m_image;
-	SDL_Texture* m_texture;
+
+	SDL_Surface* m_spaceship;
+	SDL_Surface* m_minotaur;
+
+	SDL_Texture* m_textureChar;
+	SDL_Texture* m_textureEnemy;
 
 	SDL_FRect m_imageTransform;
+	SDL_FRect m_selectedSprite;
+	SDL_FRect m_enemyLocation;
+
+	int column;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL3/SDL.h"
+#include "SDL3/SDL_image.h"
 #include <iostream>
 
 class sprite
@@ -9,8 +10,8 @@ public:
 	sprite();
 	~sprite();
 
-	SDL_Surface* loadSprite(char const* path);
-	void selectSprite();
+	SDL_Surface* loadSprite(int bmpCheck, char const* path);
+	void selectSprite(int x, int y);
 	double updateSpritelocation(double deltaTime);
 	void handleEvents(SDL_Event const &event);
 
@@ -26,8 +27,11 @@ public:
 private:
 	direction m_direction;
 
-	double imageX = 515;
-	double imageY = 640;
+	int flags;
+	int initializedFlags;
+
+	double imageX;
+	double imageY;
 };
 
 
