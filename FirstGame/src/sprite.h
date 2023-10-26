@@ -14,6 +14,7 @@ public:
 	void selectSprite(int x, int y);
 	double updateSpritelocation(double deltaTime);
 	void handleEvents(SDL_Event const &event);
+	bool isShooting();
 
 	enum class direction
 	{
@@ -21,7 +22,8 @@ public:
 		UP,
 		DOWN,
 		RIGHT,
-		LEFT
+		LEFT,
+		SHOOT
 	};
 
 private:
@@ -32,6 +34,8 @@ private:
 
 	double imageX;
 	double imageY;
+
+	bool shooting;
 };
 
 

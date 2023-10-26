@@ -17,6 +17,7 @@ public:
 private:
 	sprite spaceship;
 	sprite minotaur;
+	sprite projectile;
 
 	SDL_Renderer* m_windowRenderer;
 
@@ -28,7 +29,8 @@ private:
 
 	SDL_FRect m_imageTransform;
 	SDL_FRect m_selectedSprite;
-	SDL_FRect m_enemyLocation;
+	SDL_FRect m_enemyLocation[30];
+	SDL_FRect m_projectile;
 
 	int column;
 };

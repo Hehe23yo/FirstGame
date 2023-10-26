@@ -70,6 +70,8 @@ void sprite::handleEvents(SDL_Event const& event)
 			m_direction = direction::LEFT;
 		else if (key[SDL_SCANCODE_D] == 1)
 			m_direction = direction::RIGHT;
+		else if (key[SDL_SCANCODE_SPACE] == 1)
+			m_direction = direction::SHOOT;
 		break;
 	case SDL_EVENT_KEY_UP:
 		m_direction = direction::NONE;
@@ -92,9 +94,15 @@ double sprite::updateSpritelocation(double deltaTime)
 		if(imageX > 50)
 			imageX -= 4000 * deltaTime;
 		break;
+	case direction::SHOOT:
+		shooting = true;
+		break;
 	}
 
 	return imageX;
 }
 
-
+bool sprite::isShooting()
+{
+	return shooting;
+}

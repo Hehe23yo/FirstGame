@@ -38,10 +38,71 @@ renderer::renderer(SDL_Window* window)
 	std::cout << m_selectedSprite.y << std::endl;
 	SDL_Delay(1000000);*/
 
-	m_enemyLocation.x = 0;
-	m_enemyLocation.y = 0;
-	m_enemyLocation.h = 200;
-	m_enemyLocation.w = 200;
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			m_enemyLocation[10 * j + i].x = i * 100;
+			m_enemyLocation[10 * j + i].y = j * 100;
+			m_enemyLocation[10 * j + i].h = 200;
+			m_enemyLocation[10 * j + i].w = 200;
+		}
+	}
+	
+	m_projectile.x = m_imageTransform.x + 32;
+	m_projectile.y = m_imageTransform.y;
+	m_projectile.h = 10;
+	m_projectile.w = 5;
+
+	/*m_enemyLocation[0].x = 0;
+	m_enemyLocation[0].y = 0;
+	m_enemyLocation[0].h = 200;
+	m_enemyLocation[0].w = 200;
+
+	m_enemyLocation[1].x = 60;
+	m_enemyLocation[1].y = 0;
+	m_enemyLocation[1].h = 200;
+	m_enemyLocation[1].w = 200;
+
+	m_enemyLocation[2].x = 120;
+	m_enemyLocation[2].y = 0;
+	m_enemyLocation[2].h = 200;
+	m_enemyLocation[2].w = 200;
+
+	m_enemyLocation[3].x = 180;
+	m_enemyLocation[3].y = 0;
+	m_enemyLocation[3].h = 200;
+	m_enemyLocation[3].w = 200;
+
+	m_enemyLocation[4].x = 240;
+	m_enemyLocation[4].y = 0;
+	m_enemyLocation[4].h = 200;
+	m_enemyLocation[4].w = 200;
+
+	m_enemyLocation[5].x = 300;
+	m_enemyLocation[5].y = 0;
+	m_enemyLocation[5].h = 200;
+	m_enemyLocation[5].w = 200;
+
+	m_enemyLocation[6].x = 360;
+	m_enemyLocation[6].y = 0;
+	m_enemyLocation[6].h = 200;
+	m_enemyLocation[6].w = 200;
+
+	m_enemyLocation[7].x = 420;
+	m_enemyLocation[7].y = 0;
+	m_enemyLocation[7].h = 200;
+	m_enemyLocation[7].w = 200;
+
+	m_enemyLocation[8].x = 480;
+	m_enemyLocation[8].y = 0;
+	m_enemyLocation[8].h = 200;
+	m_enemyLocation[8].w = 200;
+
+	m_enemyLocation[9].x = 540;
+	m_enemyLocation[9].y = 0;
+	m_enemyLocation[9].h = 200;
+	m_enemyLocation[9].w = 200;*/
 	
 }
 
@@ -56,8 +117,29 @@ void renderer::renderSprite()
 	SDL_SetRenderDrawColor(m_windowRenderer, 255, 255, 255, 255);
 	SDL_RenderClear(m_windowRenderer);
 	SDL_RenderTexture(m_windowRenderer, m_textureChar, NULL, &m_imageTransform);
-	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation);
+	
+	if (projectile.isShooting())
+	{
+		SDL_SetRenderDrawColor(m_windowRenderer, 0, 0, 0, 255);
+		SDL_RenderRect(m_windowRenderer, &m_projectile);
+	}
+
+	for (int i = 0; i < 30; i++)
+	{
+		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[i]);
+	}
+	/*SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[0]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[1]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[2]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[3]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[4]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[5]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[6]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[7]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[8]);
+	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[9]);*/
 	SDL_RenderPresent(m_windowRenderer);
+
 }
 
 void renderer::handleEvents(SDL_Event const& event)
@@ -70,12 +152,29 @@ void renderer::update(double deltaTime)
 	m_imageTransform.x = spaceship.updateSpritelocation(deltaTime);
 
 	m_selectedSprite.x = column * m_selectedSprite.w;
-	m_enemyLocation.y += 6;
+
+	for (int i = 0; i < 30; i++)
+	{
+		m_enemyLocation[i].y += 6;
+	}
+
+	m_projectile.y -= 6;
+
+	/*m_enemyLocation[0].y += 6;
+	m_enemyLocation[1].y += 6;
+	m_enemyLocation[2].y += 6;
+	m_enemyLocation[3].y += 6;
+	m_enemyLocation[4].y += 6;
+	m_enemyLocation[5].y += 6;
+	m_enemyLocation[6].y += 6;
+	m_enemyLocation[7].y += 6;
+	m_enemyLocation[8].y += 6;
+	m_enemyLocation[9].y += 6;*/
+
 	column++;
 
 	if (column > 8)
 		column = 1;
-
 	
 }
 
