@@ -24,14 +24,14 @@ void Application::loop()
 	{
 		while (SDL_PollEvent(&m_event) > 0)
 		{
-			render.handleEvents(m_event);
-			switch (m_event.type)
+   			render.handleEvents(m_event);
+          	switch (m_event.type)
 			{
 			case SDL_EVENT_QUIT:
 				keepWindowOpen = false;
 				break;
 			}
-		}
+             		}
 		update(1 / 60.0);
 		draw();
 		SDL_Delay(130);

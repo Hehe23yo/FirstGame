@@ -49,10 +49,10 @@ renderer::renderer(SDL_Window* window)
 		}
 	}
 	
-	m_projectile.x = m_imageTransform.x + 32;
+	m_projectile.x = m_imageTransform.x + 32 + 20;
 	m_projectile.y = m_imageTransform.y;
 	m_projectile.h = 10;
-	m_projectile.w = 5;
+	m_projectile.w = 10;
 
 	/*m_enemyLocation[0].x = 0;
 	m_enemyLocation[0].y = 0;
@@ -118,16 +118,21 @@ void renderer::renderSprite()
 	SDL_RenderClear(m_windowRenderer);
 	SDL_RenderTexture(m_windowRenderer, m_textureChar, NULL, &m_imageTransform);
 	
-	if (projectile.isShooting())
-	{
-		SDL_SetRenderDrawColor(m_windowRenderer, 0, 0, 0, 255);
-		SDL_RenderRect(m_windowRenderer, &m_projectile);
-	}
+	
+
+	//if (projectile.isShooting())
+	//{
+	//	//std::cout << "car" << std::endl;
+	//	SDL_SetRenderDrawColor(m_windowRenderer, 0, 0, 0, 255);
+	//	SDL_RenderFillRect(m_windowRenderer, &m_projectile);
+	//}
 
 	for (int i = 0; i < 30; i++)
 	{
 		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[i]);
+		
 	}
+	//std::cout << "min" << std::endl;
 	/*SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[0]);
 	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[1]);
 	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[2]);
@@ -138,13 +143,55 @@ void renderer::renderSprite()
 	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[7]);
 	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[8]);
 	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[9]);*/
-	SDL_RenderPresent(m_windowRenderer);
+	
 
+	for (auto &b : projectile.bullets)
+	{
+		renderBullets(b);
+		std::cout << b.x << " " << b.y << std::endl;
+		if(bulletHitCheck(&b))
+		{
+			std::cout << "HIT!" << std::endl;
+			destroyBullet(&b);
+		}
+	}
+	SDL_RenderPresent(m_windowRenderer);
+}
+
+void renderer::renderBullets(SDL_FRect coods)
+{
+	
+	SDL_SetRenderDrawColor(m_windowRenderer, 0, 0, 0, 255);
+	SDL_RenderFillRect(m_windowRenderer, &coods);
+}
+
+bool renderer::bulletHitCheck(const SDL_FRect *coods)
+{
+	for (int i = 0; i < 30; i++)
+	{
+		if (coods->y == m_enemyLocation[i].y)
+		{
+			if (coods->x > m_enemyLocation[i].x && coods->x < (m_enemyLocation[i].x + m_enemyLocation[i].w))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void renderer::destroyBullet(const SDL_FRect *coods)
+{
+	//projectile.bullets.erase(std::find(projectile.bullets.begin(), projectile.bullets.end(), coods));
+
+	//projectile.bullets.erase(std::remove(projectile.bullets.begin(), projectile.bullets.end(), coods), projectile.bullets.end());
 }
 
 void renderer::handleEvents(SDL_Event const& event)
 {
 	spaceship.handleEvents(event);
+	projectile.handleEvents(event, &m_imageTransform);
 }
 
 void renderer::update(double deltaTime)
@@ -152,13 +199,23 @@ void renderer::update(double deltaTime)
 	m_imageTransform.x = spaceship.updateSpritelocation(deltaTime);
 
 	m_selectedSprite.x = column * m_selectedSprite.w;
+	
+	/*if (projectile.isShooting())
+	{
+		m_projectile.y -= 6;
+	}*/
+
+	for (auto& b : projectile.bullets)
+	{
+		b.y -= 6.0;
+	}
 
 	for (int i = 0; i < 30; i++)
 	{
 		m_enemyLocation[i].y += 6;
 	}
 
-	m_projectile.y -= 6;
+	
 
 	/*m_enemyLocation[0].y += 6;
 	m_enemyLocation[1].y += 6;

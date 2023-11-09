@@ -70,12 +70,33 @@ void sprite::handleEvents(SDL_Event const& event)
 			m_direction = direction::LEFT;
 		else if (key[SDL_SCANCODE_D] == 1)
 			m_direction = direction::RIGHT;
-		else if (key[SDL_SCANCODE_SPACE] == 1)
-			m_direction = direction::SHOOT;
 		break;
 	case SDL_EVENT_KEY_UP:
 		m_direction = direction::NONE;
 	}
+}
+
+void sprite::handleEvents(SDL_Event const& event, const SDL_FRect *imageTransform)
+{
+	Uint8 const* key;
+	switch (event.type)
+	{
+	case SDL_EVENT_KEY_DOWN:
+		key = SDL_GetKeyboardState(nullptr);
+
+		if (key[SDL_SCANCODE_SPACE] == 1)
+		{
+			SDL_FRect bullet;
+			bullet.x = imageTransform->x + (imageTransform->w / 2.0) - 10;
+			bullet.y = imageTransform->y;
+			bullet.h = 20.0;
+			bullet.w = 20.0;
+
+			bullets.push_back(bullet);
+		}
+		break;
+	}
+	
 }
 
 double sprite::updateSpritelocation(double deltaTime)
@@ -94,9 +115,10 @@ double sprite::updateSpritelocation(double deltaTime)
 		if(imageX > 50)
 			imageX -= 4000 * deltaTime;
 		break;
-	case direction::SHOOT:
+	/*case direction::SHOOT:
 		shooting = true;
-		break;
+		std::cout << shooting << std::endl;
+		break;*/
 	}
 
 	return imageX;
@@ -105,4 +127,9 @@ double sprite::updateSpritelocation(double deltaTime)
 bool sprite::isShooting()
 {
 	return shooting;
+}
+
+void sprite::setShooting(bool value)
+{
+	shooting = value;
 }

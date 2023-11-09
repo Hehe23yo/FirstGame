@@ -3,6 +3,7 @@
 #include "SDL3/SDL.h"
 #include "SDL3/SDL_image.h"
 #include <iostream>
+#include <vector>
 
 class sprite
 {
@@ -11,10 +12,14 @@ public:
 	~sprite();
 
 	SDL_Surface* loadSprite(int bmpCheck, char const* path);
-	void selectSprite(int x, int y);
 	double updateSpritelocation(double deltaTime);
+	
 	void handleEvents(SDL_Event const &event);
+	void handleEvents(SDL_Event const& event, const SDL_FRect *imageTransform);
+
 	bool isShooting();
+	void setShooting(bool value);
+	
 
 	enum class direction
 	{
@@ -26,6 +31,8 @@ public:
 		SHOOT
 	};
 
+	std::vector<SDL_FRect> bullets;
+
 private:
 	direction m_direction;
 
@@ -36,6 +43,8 @@ private:
 	double imageY;
 
 	bool shooting;
+
+	
 };
 
 

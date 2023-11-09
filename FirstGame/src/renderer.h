@@ -14,6 +14,10 @@ public:
 	void selectSprite();
 	void handleEvents(SDL_Event const &event);
 	void update(double deltaTime);
+	void renderBullets(SDL_FRect coods);
+	bool bulletHitCheck(const SDL_FRect *coods);
+	void destroyBullet(const SDL_FRect *coods);
+
 private:
 	sprite spaceship;
 	sprite minotaur;
