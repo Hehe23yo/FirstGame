@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "renderer.h"
 
 renderer::renderer(SDL_Window* window)
@@ -42,17 +44,27 @@ renderer::renderer(SDL_Window* window)
 	{
 		for (int i = 0; i < 9; i++)
 		{
-			m_enemyLocation[10 * j + i].x = i * 100;
-			m_enemyLocation[10 * j + i].y = j * 100;
-			m_enemyLocation[10 * j + i].h = 200;
-			m_enemyLocation[10 * j + i].w = 200;
+			/*minotaur.enemy[10 * j + i].x = i * 100.0;
+			minotaur.enemy[10 * j + i].y = j * 100.0;
+			minotaur.enemy[10 * j + i].h = 200.0;
+			minotaur.enemy[]*/
+			/*m_enemyLocation[10 * j + i].x = i * 100.0;
+			m_enemyLocation[10 * j + i].y = j * 100.0;
+			m_enemyLocation[10 * j + i].h = 200.0;
+			m_enemyLocation[10 * j + i].w = 200.0;*/
+			m_enemyLocation.x = i * 100.0;
+			m_enemyLocation.y = j * 100.0;
+			m_enemyLocation.h = 200.0;
+			m_enemyLocation.w = 200.0;
+
+			minotaur.enemy.push_back(m_enemyLocation);
 		}
 	}
 	
-	m_projectile.x = m_imageTransform.x + 32 + 20;
+	/*m_projectile.x = m_imageTransform.x + 32 + 20;
 	m_projectile.y = m_imageTransform.y;
 	m_projectile.h = 10;
-	m_projectile.w = 10;
+	m_projectile.w = 10;*/
 
 	/*m_enemyLocation[0].x = 0;
 	m_enemyLocation[0].y = 0;
@@ -127,10 +139,14 @@ void renderer::renderSprite()
 	//	SDL_RenderFillRect(m_windowRenderer, &m_projectile);
 	//}
 
-	for (int i = 0; i < 30; i++)
+	/*for (int i = 0; i < 30; i++)
 	{
-		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[i]);
-		
+		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &minotaur.enemy[i]);
+	}*/
+
+	for (auto& b : minotaur.enemy)
+	{
+		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &b);
 	}
 	//std::cout << "min" << std::endl;
 	/*SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[0]);
@@ -147,13 +163,13 @@ void renderer::renderSprite()
 
 	for (auto &b : projectile.bullets)
 	{
-		renderBullets(b);
 		std::cout << b.x << " " << b.y << std::endl;
 		if(bulletHitCheck(&b))
 		{
 			std::cout << "HIT!" << std::endl;
 			destroyBullet(&b);
 		}
+		renderBullets(b);
 	}
 	SDL_RenderPresent(m_windowRenderer);
 }
@@ -167,12 +183,26 @@ void renderer::renderBullets(SDL_FRect coods)
 
 bool renderer::bulletHitCheck(const SDL_FRect *coods)
 {
-	for (int i = 0; i < 30; i++)
+	/*for (int i = 0; i < 30; i++)
 	{
-		if (coods->y == m_enemyLocation[i].y)
+		if (coods->y > minotaur.enemy[i].y && coods->y <= (minotaur.enemy[i].y + minotaur.enemy[i].h - 20))
 		{
-			if (coods->x > m_enemyLocation[i].x && coods->x < (m_enemyLocation[i].x + m_enemyLocation[i].w))
+			if (coods->x > (minotaur.enemy[i].x + 35) && coods->x < (minotaur.enemy[i].x + minotaur.enemy[i].w - 35))
 			{
+				minotaur.enemy[i].h = 0;
+				minotaur.enemy[i].w = 0;
+				return true;
+			}
+		}
+	}*/
+
+	for (auto& e : minotaur.enemy)
+	{
+		if (coods->y > e.y && coods->y <= (e.y + e.h - 20))
+		{
+			if (coods->x > (e.x + 35) && coods->x < (e.x + e.w - 35))
+			{
+				destroyEnemy(&e);
 				return true;
 			}
 		}
@@ -184,8 +214,23 @@ bool renderer::bulletHitCheck(const SDL_FRect *coods)
 void renderer::destroyBullet(const SDL_FRect *coods)
 {
 	//projectile.bullets.erase(std::find(projectile.bullets.begin(), projectile.bullets.end(), coods));
-
+	auto i = std::remove_if(projectile.bullets.begin(), projectile.bullets.end(), 
+		[&](SDL_FRect s) {return (s.x == coods->x && s.y == coods->y); });
+	if (i != projectile.bullets.end())
+	{
+		projectile.bullets.erase(i);
+	}
 	//projectile.bullets.erase(std::remove(projectile.bullets.begin(), projectile.bullets.end(), coods), projectile.bullets.end());
+}
+
+void renderer::destroyEnemy(const SDL_FRect *enemy)
+{
+	auto i = std::remove_if(minotaur.enemy.begin(), minotaur.enemy.end(),
+		[&](SDL_FRect s) {return (s.x == enemy->x && s.y == enemy->y); });
+	if (i != minotaur.enemy.end())
+	{
+		minotaur.enemy.erase(i);
+	}
 }
 
 void renderer::handleEvents(SDL_Event const& event)
@@ -210,10 +255,15 @@ void renderer::update(double deltaTime)
 		b.y -= 6.0;
 	}
 
-	for (int i = 0; i < 30; i++)
+	for (auto& e : minotaur.enemy)
 	{
-		m_enemyLocation[i].y += 6;
+		e.y += 6;
 	}
+
+	/*for (int i = 0; i < 30; i++)
+	{
+		minotaur.enemy[i].y += 6;
+	}*/
 
 	
 

@@ -32,6 +32,7 @@ public:
 	};
 
 	std::vector<SDL_FRect> bullets;
+	std::vector<SDL_FRect> enemy;
 
 private:
 	direction m_direction;

@@ -17,6 +17,7 @@ public:
 	void renderBullets(SDL_FRect coods);
 	bool bulletHitCheck(const SDL_FRect *coods);
 	void destroyBullet(const SDL_FRect *coods);
+	void destroyEnemy(const SDL_FRect* enemy);
 
 private:
 	sprite spaceship;
@@ -33,8 +34,7 @@ private:
 
 	SDL_FRect m_imageTransform;
 	SDL_FRect m_selectedSprite;
-	SDL_FRect m_enemyLocation[30];
-	SDL_FRect m_projectile;
+	SDL_FRect m_enemyLocation;
 
 	int column;
 };
