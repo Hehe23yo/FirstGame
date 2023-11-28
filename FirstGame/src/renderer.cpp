@@ -27,12 +27,12 @@ renderer::renderer(SDL_Window* window)
 	m_imageTransform.x = 515;
 	m_imageTransform.y = 670;
 
-	column = 1;
+	columnEnemy = 1;
 
-	m_selectedSprite.h = m_minotaur->h / 11;
-	m_selectedSprite.w = m_minotaur->w / 9;
-	m_selectedSprite.x = 1 * m_selectedSprite.w;
-	m_selectedSprite.y = 4 * m_selectedSprite.h;
+	m_selectedSpriteEnemy.h = m_minotaur->h / 11;
+	m_selectedSpriteEnemy.w = m_minotaur->w / 9;
+	m_selectedSpriteEnemy.x = 1 * m_selectedSpriteEnemy.w;
+	m_selectedSpriteEnemy.y = 4 * m_selectedSpriteEnemy.h;
 
 	/*std::cout << m_selectedSprite.h << std::endl;
 	std::cout << m_selectedSprite.w << std::endl;
@@ -60,6 +60,13 @@ renderer::renderer(SDL_Window* window)
 			minotaur.enemy.push_back(m_enemyLocation);
 		}
 	}
+
+	SDL_FRect temp;
+	temp.x = 100;
+	temp.y = 100;
+	temp.h = 65;
+	temp.w = 65;
+	m_magic.push_back(temp);
 	
 	/*m_projectile.x = m_imageTransform.x + 32 + 20;
 	m_projectile.y = m_imageTransform.y;
@@ -146,8 +153,20 @@ void renderer::renderSprite()
 
 	for (auto& b : minotaur.enemy)
 	{
-		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &b);
+		SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSpriteEnemy, &b);
 	}
+
+	for (auto& m : m_magic)
+	{
+		SDL_SetRenderDrawColor(m_windowRenderer, 0, 0, 255, 255);
+		SDL_RenderFillRect(m_windowRenderer, &m);
+		if (m.y > 800)
+		{
+			std::cout << "yoyo" << std::endl;
+			destroyBullet(&m);
+		}
+	}
+
 	//std::cout << "min" << std::endl;
 	/*SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[0]);
 	SDL_RenderTexture(m_windowRenderer, m_textureEnemy, &m_selectedSprite, &m_enemyLocation[1]);
@@ -163,10 +182,10 @@ void renderer::renderSprite()
 
 	for (auto &b : projectile.bullets)
 	{
-		std::cout << b.x << " " << b.y << std::endl;
+		//std::cout << b.x << " " << b.y << std::endl;
 		if(bulletHitCheck(&b))
 		{
-			std::cout << "HIT!" << std::endl;
+			//std::cout << "HIT!" << std::endl;
 			destroyBullet(&b);
 		}
 		renderBullets(b);
@@ -208,13 +227,18 @@ bool renderer::bulletHitCheck(const SDL_FRect *coods)
 		}
 	}
 
+	if (coods->y < 0)
+	{
+		return true;
+	}
+
 	return false;
 }
 
 void renderer::destroyBullet(const SDL_FRect *coods)
 {
 	//projectile.bullets.erase(std::find(projectile.bullets.begin(), projectile.bullets.end(), coods));
-	auto i = std::remove_if(projectile.bullets.begin(), projectile.bullets.end(), 
+	auto i = std::remove_if(projectile.bullets.begin(), projectile.bullets.end(),
 		[&](SDL_FRect s) {return (s.x == coods->x && s.y == coods->y); });
 	if (i != projectile.bullets.end())
 	{
@@ -226,11 +250,12 @@ void renderer::destroyBullet(const SDL_FRect *coods)
 void renderer::destroyEnemy(const SDL_FRect *enemy)
 {
 	auto i = std::remove_if(minotaur.enemy.begin(), minotaur.enemy.end(),
-		[&](SDL_FRect s) {return (s.x == enemy->x && s.y == enemy->y); });
+		[&](SDL_FRect s) {return ((s.x == enemy->x && s.y == enemy->y) || s.y > 800); });
 	if (i != minotaur.enemy.end())
 	{
 		minotaur.enemy.erase(i);
 	}
+	std::cout << "Enemey Destroyed!" << std::endl;
 }
 
 void renderer::handleEvents(SDL_Event const& event)
@@ -238,12 +263,31 @@ void renderer::handleEvents(SDL_Event const& event)
 	spaceship.handleEvents(event);
 	projectile.handleEvents(event, &m_imageTransform);
 }
-
+int t = 0;
 void renderer::update(double deltaTime)
 {
-	m_imageTransform.x = spaceship.updateSpritelocation(deltaTime);
+	count++;
+	dt += deltaTime;
+	//std::cout << dt << std::endl;
+	c += 1 * (int(dt * 10) % 10 != c % 10);
+	
+	//std::cout << count << std::endl;
+	if (c % 1 == 0 && c != t)
+	{
+		SDL_FRect temp;
+		//temp.x = minotaur.enemy[int(dt * 10) % (count % 10)].x + 50;
+		//temp.y = minotaur.enemy[int(dt * 10) % (count % 10)].y + m_selectedSpriteEnemy.h;
+		temp.x = m_imageTransform.x;
+		temp.y = 200 + m_selectedSpriteEnemy.h;
+		temp.h = 30;
+		temp.w = 30;
+		m_magic.push_back(temp);
 
-	m_selectedSprite.x = column * m_selectedSprite.w;
+		t = c;
+	}
+	m_imageTransform.x = spaceship.updateSpritelocation(deltaTime);
+	//std::cout << spaceship.updateSpritelocation(deltaTime) << " " << deltaTime << " " << m_imageTransform.x << std::endl;
+	m_selectedSpriteEnemy.x = columnEnemy * m_selectedSpriteEnemy.w;
 	
 	/*if (projectile.isShooting())
 	{
@@ -252,12 +296,24 @@ void renderer::update(double deltaTime)
 
 	for (auto& b : projectile.bullets)
 	{
+		b.x -= 3.0;
 		b.y -= 6.0;
 	}
 
 	for (auto& e : minotaur.enemy)
 	{
 		e.y += 6;
+		
+		if (e.y > 800)
+		{
+			destroyEnemy(&e);
+		}
+	}
+
+	for (auto& m : m_magic)
+	{
+		m.y += 5000 * deltaTime;
+		//std::cout << m.y << std::endl;
 	}
 
 	/*for (int i = 0; i < 30; i++)
@@ -278,10 +334,10 @@ void renderer::update(double deltaTime)
 	m_enemyLocation[8].y += 6;
 	m_enemyLocation[9].y += 6;*/
 
-	column++;
+	columnEnemy++;
 
-	if (column > 8)
-		column = 1;
+	if (columnEnemy > 8)
+		columnEnemy = 1;
 	
 }
 

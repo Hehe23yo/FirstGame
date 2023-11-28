@@ -24,15 +24,13 @@ public:
 	enum class direction
 	{
 		NONE,
-		UP,
-		DOWN,
 		RIGHT,
-		LEFT,
-		SHOOT
+		LEFT
 	};
 
 	std::vector<SDL_FRect> bullets;
 	std::vector<SDL_FRect> enemy;
+	
 
 private:
 	direction m_direction;
@@ -47,6 +45,5 @@ private:
 
 	
 };
-
 
 

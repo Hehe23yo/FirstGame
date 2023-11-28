@@ -49,6 +49,12 @@ SDL_Surface* sprite::loadSprite(int bmpCheck, char const* path)
 
 		SDL_Surface* image = IMG_Load(path);
 		
+		if (!image)
+		{
+			std::cout << "Failed!" << std::endl;
+			std::cout << "SDL ERROR : " << SDL_GetError() << std::endl;
+		}
+		
 		return image;
 	}
 
@@ -62,14 +68,18 @@ void sprite::handleEvents(SDL_Event const& event)
 	case SDL_EVENT_KEY_DOWN:
 		key = SDL_GetKeyboardState(nullptr);
 
-		if (key[SDL_SCANCODE_W] == 1)
-			m_direction = direction::UP;
-		else if (key[SDL_SCANCODE_S] == 1)
-			m_direction = direction::DOWN;
-		else if (key[SDL_SCANCODE_A] == 1)
+		if (key[SDL_SCANCODE_A] == 1)
+		{
 			m_direction = direction::LEFT;
+			//std::cout << "A" << std::endl;
+		}
+			
 		else if (key[SDL_SCANCODE_D] == 1)
+		{
 			m_direction = direction::RIGHT;
+			//std::cout << "W" << std::endl;
+		}
+			
 		break;
 	case SDL_EVENT_KEY_UP:
 		m_direction = direction::NONE;
@@ -93,6 +103,8 @@ void sprite::handleEvents(SDL_Event const& event, const SDL_FRect *imageTransfor
 			bullet.w = 20.0;
 
 			bullets.push_back(bullet);
+
+			std::cout << "SPACE" << std::endl;
 		}
 		break;
 	}
@@ -109,18 +121,14 @@ double sprite::updateSpritelocation(double deltaTime)
 		break;
 	case direction::RIGHT:
 		if(imageX < 850)
-			imageX += 4000 * deltaTime;
+			imageX += 10000.0 * 10.0f * deltaTime * deltaTime;
 		break;
 	case direction::LEFT:
 		if(imageX > 50)
-			imageX -= 4000 * deltaTime;
+			imageX -= 10000.0 * 10.0f * deltaTime * deltaTime;
 		break;
-	/*case direction::SHOOT:
-		shooting = true;
-		std::cout << shooting << std::endl;
-		break;*/
 	}
-
+	//std::cout << imageX << std::endl;
 	return imageX;
 }
 

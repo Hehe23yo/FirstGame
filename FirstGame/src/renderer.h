@@ -33,9 +33,13 @@ private:
 	SDL_Texture* m_textureEnemy;
 
 	SDL_FRect m_imageTransform;
-	SDL_FRect m_selectedSprite;
 	SDL_FRect m_enemyLocation;
+	SDL_FRect m_selectedSpriteEnemy;
 
-	int column;
+	int columnEnemy;
+	double dt;
+	int count;
+	int c;
+	std::vector<SDL_FRect> m_magic;
 };
 

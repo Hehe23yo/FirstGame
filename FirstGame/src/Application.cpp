@@ -31,7 +31,7 @@ void Application::loop()
 				keepWindowOpen = false;
 				break;
 			}
-             		}
+        }
 		update(1 / 60.0);
 		draw();
 		SDL_Delay(130);
